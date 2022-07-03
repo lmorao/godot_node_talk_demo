@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Lava.gd" type="Script" id=1]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+void fragment () {
+    vec4 tex = texture(TEXTURE, UV + TIME/4.0);
+    tex.x = ((sin(TIME) + 1.0)/ 2.0) * tex.x;
+    COLOR = tex;
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+
+[sub_resource type="OpenSimplexNoise" id=5]
+
+[sub_resource type="NoiseTexture" id=6]
+width = 64
+height = 64
+noise = SubResource( 5 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 32, 32 )
+
+[node name="Lava" type="Node2D"]
+position = Vector2( 448, 216 )
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0.843137, 0.0627451, 0.0627451, 1 )
+material = SubResource( 4 )
+texture = SubResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
